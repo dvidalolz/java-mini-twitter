@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import main.java.exceptions.NoUserException;
@@ -28,11 +29,19 @@ public class UserControl {
     @FXML
     ListView<String> newsFeedListView;
 
+    @FXML
+    private Label myLabel;
+
     String userID;
     User user;
     UserFunction userfunction;
 
     UserManager usermanager = UserManager.getInstance();
+
+    @FXML
+    public void initialize() {
+        updateLastUpdate("Last updated: ");
+    }
 
     public void followUser() {
         try {
@@ -86,8 +95,12 @@ public class UserControl {
 
     public void updateNewsFeedUI() {
         Platform.runLater(() -> {
-            setNewsFeed(user.getNewsFeed()); 
+            setNewsFeed(user.getNewsFeed());
         });
+    }
+
+    public void updateLastUpdate(String text) {
+        myLabel.setText(text);
     }
 
 }

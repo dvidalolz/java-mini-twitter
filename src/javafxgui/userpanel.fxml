@@ -16,5 +16,6 @@
       <Button layoutX="393.0" layoutY="7.0" mnemonicParsing="false" onAction="#followUser" prefHeight="37.0" prefWidth="166.0" text="Follow User" />
       <Label layoutX="41.0" layoutY="62.0" text="Following" />
       <Label layoutX="41.0" layoutY="269.0" text="News Feed" />
+      <Label fx:id="myLabel" layoutX="393.0" layoutY="269.0" prefHeight="17.0" prefWidth="166.0" text="Label" />
    </children>
 </AnchorPane>

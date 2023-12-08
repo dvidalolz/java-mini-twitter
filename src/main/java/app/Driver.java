@@ -8,42 +8,27 @@ import main.java.models.UserModels.UserManager;
 
 public class Driver {
 
-    public static void main(String[] args) throws NoUserException, DuplicateIDException {
-        UserManager userManager = UserManager.getInstance();
-
-        // created users
-        userManager.createUser("Suzy");
-        userManager.createUser("David");
-        userManager.createUser("Teddy");
-
-        // these are the users
-        User suzy = userManager.getUserByID("Suzy");
-        User david = userManager.getUserByID("David");
-        User teddy = userManager.getUserByID("Teddy");
-
-        // these are user functions
-        UserFunction suzyUserFunction = new UserFunction(suzy);
-        UserFunction davidUserFunction = new UserFunction(david);
-        UserFunction teddyUserFunction = new UserFunction(teddy);
-
-        // suzy follows david and Teddy
-        suzyUserFunction.follow("David");
-        suzyUserFunction.follow("Teddy");
-
-        // lets make david and teddy tweet stuff
-        davidUserFunction.tweet("I e");
-        davidUserFunction.tweet("Eggs and Bacon");
-        davidUserFunction.tweet("pes");
-        davidUserFunction.tweet("r");
-        davidUserFunction.tweet("cink");
-
-        teddyUserFunction.tweet("gimme food");
-        teddyUserFunction.tweet("flick ma ck");
-        teddyUserFunction.tweet("imma steal ur socks");
-
-        System.out.println(suzy.getNewsFeed());
-        System.out.println(userManager.getUserGroupByID("Root"));
-
-
+    public static void main(String[] args) {
+        String timeString = "13:45"; // example time
+        try {
+            int totalMinutes = convertTimeToInt(timeString);
+            System.out.println("Total minutes: " + totalMinutes);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid time format.");
+        }
     }
+
+    public static int convertTimeToInt(String timeString) throws NumberFormatException {
+        String[] parts = timeString.split(":");
+        if (parts.length != 2) {
+            throw new NumberFormatException("Invalid time format");
+        }
+
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+
+        // Convert hours to minutes and add the minute part
+        return hours * 60 + minutes;
+    }
+
 }

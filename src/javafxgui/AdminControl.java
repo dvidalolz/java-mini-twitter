@@ -2,6 +2,7 @@ package javafxgui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -20,6 +21,7 @@ import main.java.exceptions.DuplicateIDException;
 import main.java.exceptions.NoUserException;
 import main.java.models.UserModels.UserManager;
 import main.java.models.UserModels.UserGroup;
+import main.java.models.AnalyticsModels.LastUpdateTime;
 import main.java.models.AnalyticsModels.PositiveTweetTotal;
 import main.java.models.AnalyticsModels.TweetTotal;
 import main.java.models.AnalyticsModels.UserGroupTotalVisitor;
@@ -92,7 +94,12 @@ public class AdminControl implements Initializable {
             Scene newScene = new Scene(newRoot);
 
             newStage.setScene(newScene);
-            newStage.setTitle("User View: " + selectedItem.getValue().getID());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+            String formattedTime = selectedItem.getValue().timeCreated.format(formatter);
+
+            newStage.setTitle(
+                    "User " + selectedItem.getValue().getID() + " created at: " + formattedTime);
 
             // give selected userID to user controller
             UserControl uc = loader.getController();
@@ -103,7 +110,6 @@ public class AdminControl implements Initializable {
 
             List<String> following = selectedUser.getFollowing();
             Map<String, List<String>> newsFeed = selectedUser.getNewsFeed();
-
 
             if (!following.isEmpty()) {
                 uc.setFollowingList(following);
@@ -212,6 +218,27 @@ public class AdminControl implements Initializable {
         newStage.show();
     }
 
+    public void showLastUpdateTime(ActionEvent e) throws IOException {
+        // analytics
+        LastUpdateTime lastUpdateTime = new LastUpdateTime();
+        lastUpdateTime.visit(usermanager);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("lastupdatetime.fxml"));
+        Parent newRoot = loader.load();
+
+        Stage newStage = new Stage();
+        Scene newScene = new Scene(newRoot);
+
+        newStage.setScene(newScene);
+        newStage.setTitle("Last Update Time");
+
+        AnalyticsControl ac = loader.getController();
+        String text = convertIntToTime(lastUpdateTime.getTotal());
+        ac.displayTotal("Last update at: " + text, 1);
+
+        newStage.show();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -281,6 +308,13 @@ public class AdminControl implements Initializable {
             System.err.println("Could not retrieve user: " + error2.getMessage());
         }
 
+    }
+
+    private static String convertIntToTime(int totalMinutes) {
+        int hours = totalMinutes / 60; // Get the whole hours
+        int minutes = totalMinutes % 60; // Get the remaining minutes
+
+        return String.format("%02d:%02d", hours, minutes);
     }
 
 }

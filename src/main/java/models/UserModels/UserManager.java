@@ -47,8 +47,11 @@ public class UserManager implements AnalyticsElement {
     public void createUser(String userID) throws DuplicateIDException {
         if (userMap.containsKey(userID)) {
             throw new DuplicateIDException("User " + userID + " already exists");
+        } else if (userID.contains(" ")) {
+            throw new DuplicateIDException("UserID must not contain spaces");
         } else {
             userMap.put(userID, new User(userID));
+            userMap.get(userID);
         }
     }
 

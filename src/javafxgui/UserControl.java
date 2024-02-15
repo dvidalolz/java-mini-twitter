@@ -16,12 +16,15 @@ import main.java.models.UserModels.User;
 import main.java.models.UserModels.UserFunction;
 import main.java.models.UserModels.UserManager;
 
+/**
+ * Manages user interactions within the user panel, such as following users and posting tweets.
+ * It updates the UI with the latest following list and news feed.
+ */
+
 public class UserControl {
-    @FXML
-    TextField followTextField;
 
     @FXML
-    TextField tweetTextField;
+    TextField followTextField, tweetTextField;
 
     @FXML
     ListView<String> followingListView;
@@ -38,11 +41,13 @@ public class UserControl {
 
     UserManager usermanager = UserManager.getInstance();
 
+    // Initial setup, could be used for setting default states or loading user info.
     @FXML
     public void initialize() {
         updateLastUpdate("Last updated: ");
     }
 
+    // Follows a user based on the input in the followTextField.
     public void followUser() {
         try {
             userfunction.follow(followTextField.getText());
@@ -55,6 +60,7 @@ public class UserControl {
         followTextField.setText("");
     }
 
+    // Posts a tweet and updates the news feed accordingly.
     public void postTweet() {
         try {
             userfunction.tweet(tweetTextField.getText());
@@ -65,6 +71,7 @@ public class UserControl {
         tweetTextField.setText("");
     }
 
+    // Sets the user for this control, enabling user-specific actions.
     public void setUser(String id) {
         try {
             user = usermanager.getUserByID(id);
@@ -74,12 +81,14 @@ public class UserControl {
         }
     }
 
+    // Updates the list of users that the current user is following.
     public void setFollowingList(List<String> following) {
         ObservableList<String> items = FXCollections.observableArrayList(following);
         followingListView.setItems(items);
 
     }
 
+    // Updates the news feed with tweets from followed users.
     public void setNewsFeed(Map<String, List<String>> newsFeed) {
         List<String> feedItems = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : newsFeed.entrySet()) {
@@ -93,12 +102,14 @@ public class UserControl {
         newsFeedListView.setItems(items);
     }
 
+    // Ensures the UI is updated with the latest news feed info in response to new tweets.
     public void updateNewsFeedUI() {
         Platform.runLater(() -> {
             setNewsFeed(user.getNewsFeed());
         });
     }
 
+    // Updates a label, perhaps with the last time the news feed was updated.
     public void updateLastUpdate(String text) {
         myLabel.setText(text);
     }

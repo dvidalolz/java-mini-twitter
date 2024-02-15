@@ -32,6 +32,9 @@ import javafx.scene.control.TreeCell;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+/**
+ * Controls the main admin panel, handling user and group management plus analytics.
+ */
 public class AdminControl implements Initializable {
     @FXML
     private TextField userTextField;
@@ -42,6 +45,7 @@ public class AdminControl implements Initializable {
 
     UserManager usermanager = UserManager.getInstance();
 
+    // Adds a new user under the selected group.
     public void addUser(ActionEvent e) {
         String userID = userTextField.getText();
         TreeItem<UserEntity> selectedItem = selectItem();
@@ -62,6 +66,7 @@ public class AdminControl implements Initializable {
 
     }
 
+    // Adds a new group under the selected group.
     public void addGroup(ActionEvent e) {
         String groupID = groupTextField.getText();
         TreeItem<UserEntity> selectedItem = selectItem();
@@ -81,6 +86,7 @@ public class AdminControl implements Initializable {
         groupTextField.setText("");
     }
 
+    // Entry point for a detailed view for a selected user.
     public void openUserView(ActionEvent e) throws IOException {
         TreeItem<UserEntity> selectedItem = selectItem();
 
@@ -125,6 +131,11 @@ public class AdminControl implements Initializable {
         }
     }
 
+    /**
+    * Basic Analytics features in admin control view
+    */
+
+    // Displays the total number of users.
     public void showUserTotal(ActionEvent e) throws IOException {
         // analytics
         UserTotalVisitor userAnalytics = new UserTotalVisitor();
@@ -239,6 +250,11 @@ public class AdminControl implements Initializable {
         newStage.show();
     }
 
+    /**
+     * Tree view component configuration
+     */
+
+    // Sets up the tree view with root group and custom cell formatting.
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -269,7 +285,7 @@ public class AdminControl implements Initializable {
 
     }
 
-    // return selected treeItem, if none, return the root.
+    // Helper to get the selected item or default to root.
     public TreeItem<UserEntity> selectItem() {
         TreeItem<UserEntity> item = treeView.getSelectionModel().getSelectedItem();
         if (item != null) {
@@ -280,6 +296,7 @@ public class AdminControl implements Initializable {
 
     }
 
+    // Adds a user to the tree view under a selected group.
     private void addUserToTree(TreeItem<UserEntity> selectedItem, String ID) {
         try {
             usermanager.createUser(ID);
@@ -295,6 +312,7 @@ public class AdminControl implements Initializable {
 
     }
 
+    // Adds a group to the tree view under a selected group (groupception)
     private void addGroupToTree(TreeItem<UserEntity> selectedItem, String ID) {
         try {
             usermanager.createUserGroup(ID);
@@ -310,6 +328,7 @@ public class AdminControl implements Initializable {
 
     }
 
+    // Helper for converting int to time
     private static String convertIntToTime(int totalMinutes) {
         int hours = totalMinutes / 60; // Get the whole hours
         int minutes = totalMinutes % 60; // Get the remaining minutes

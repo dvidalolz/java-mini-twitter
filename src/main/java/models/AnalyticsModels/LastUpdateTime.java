@@ -6,10 +6,19 @@ import main.java.models.UserModels.User;
 import main.java.models.UserModels.UserManager;
 import main.java.models.interfaces.AnalyticsVisitor;
 
+/**
+ * Analytics component to determine the most recent tweet time across all users.
+ */
+
 public class LastUpdateTime implements AnalyticsVisitor {
 
     private int lastUpdatedTime;
 
+    /**
+     * Analyzes all users to find the latest tweet time.
+     * 
+     * @param userManager The UserManager containing all user data.
+     */
     @Override
     public void visit(UserManager userManager) {
 
@@ -29,6 +38,11 @@ public class LastUpdateTime implements AnalyticsVisitor {
         }
     }
 
+    /**
+     * Retrieves the latest tweet time found during the visit.
+     * 
+     * @return The latest tweet time in minutes since the start of the day.
+     */
     @Override
     public int getTotal() {
         return lastUpdatedTime;

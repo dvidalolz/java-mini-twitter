@@ -8,6 +8,10 @@ import main.java.exceptions.NoUserException;
 import main.java.models.interfaces.Observer;
 import main.java.models.interfaces.Subject;
 
+
+/**
+ * Handles notification logic for user updates, managing a list of observers interested in such updates.
+ */
 public class UserNotifier implements Subject {
     private UserManager userManager;
     private List<Observer> observers;
@@ -17,6 +21,9 @@ public class UserNotifier implements Subject {
         this.observers = new ArrayList<>();
     }
 
+    /**
+     * Registers an observer to be notified of updates, ensuring no duplicates.
+     */
     @Override
     public void registerObserver(Observer observer) throws DuplicateIDException {
         if (observers.contains(observer)) {
@@ -26,6 +33,9 @@ public class UserNotifier implements Subject {
         }
     }
 
+    /**
+     * Removes a previously registered observer.
+     */
     @Override
     public void removeObserver(Observer observer) throws NoUserException {
         if (observers.contains(observer)) {
@@ -35,6 +45,9 @@ public class UserNotifier implements Subject {
         }
     }
 
+    /**
+     * Notifies all registered observers of a new tweet by a user.
+     */
     @Override
     public void notifyObservers(String userID, String tweet) throws NoUserException {
         for (Observer observer : observers) {
@@ -47,6 +60,9 @@ public class UserNotifier implements Subject {
         }
     }
 
+    /**
+    * Initializes the list of observers based on a user's followers, preparing for notification.
+    */
     public void initObservers(User user) {
         observers.clear();
         for (String followerID : user.getFollowers()) {

@@ -6,12 +6,19 @@ import java.time.format.DateTimeFormatter;
 import main.java.exceptions.DuplicateIDException;
 import main.java.exceptions.NoUserException;
 
+
+/**
+ * Provides specific functionalities for a User, such as following others and posting tweets.
+ */
 public class UserFunction {
     private User user;
     private UserManager userManager = UserManager.getInstance();
     private UserNotifier userNotifier;
     private static LocalTime lastUpdateTime = LocalTime.now();
 
+    /**
+     * Initializes the UserFunction for a specific User.
+     */
     public UserFunction(User user) throws NoUserException {
         this.user = user;
         this.userNotifier = new UserNotifier();
@@ -22,6 +29,9 @@ public class UserFunction {
         return lastUpdateTime.format(formatter);
     }
 
+    /**
+     * Allows a user to follow another user by their userID.
+     */
     public void follow(String userID) throws NoUserException {
         try {
             user.setFollowing(userID);
@@ -37,6 +47,9 @@ public class UserFunction {
         }
     }
 
+    /**
+     * Adds a follower to this user's list of followers.
+     */
     public void addFollower(String userID) throws DuplicateIDException {
         if (user.getFollowers().contains(userID)) {
             throw new DuplicateIDException("Already followed by " + userID);
@@ -45,6 +58,9 @@ public class UserFunction {
         }
     }
 
+    /**
+     * Handles the posting of a tweet by the user, updating all relevant feeds and notifying observers.
+     */
     public void tweet(String tweet) throws NoUserException {
         // add tweet to list of all tweets (map in userManager)
         userManager.addTweet(user.getID(), tweet);

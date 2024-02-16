@@ -6,10 +6,19 @@ import java.util.Map;
 import main.java.models.UserModels.UserManager;
 import main.java.models.interfaces.AnalyticsVisitor;
 
+/**
+ * Counts the total number of positive tweets across all users.
+ * A tweet is considered positive if it contains words "good", "great", or "cool".
+ */
 public class PositiveTweetTotal implements AnalyticsVisitor {
 
     private int positiveTweetTotal;
 
+    /**
+     * Iterates over all tweets, incrementing the count for those containing positive words.
+     * 
+     * @param userManager Provides access to all user tweets.
+     */
     @Override
     public void visit(UserManager userManager) {
         Map<String, List<String>> allTweets = userManager.getTweetMap();
